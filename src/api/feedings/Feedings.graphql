@@ -1,0 +1,25 @@
+# All of this will be available to the API
+scalar Date
+
+type Feeding {
+  _id: ID!
+  userId: ID!
+  petId: ID!
+  timestamp: Date!
+  foodType: String!
+}
+input FeedingInput {
+  userId: ID!
+  petId: ID!
+  timestamp: Date!
+  foodType: String!
+}
+
+type Mutation {
+  logFeeding(feeding: FeedingInput!): Feeding
+}
+
+type Query {
+  getLastFeeding: Feeding
+  getFeedings: [Feeding]
+}

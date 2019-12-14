@@ -1,0 +1,36 @@
+# All of this will be available to the API
+type Pet {
+  _id: ID!
+  name: String!
+  feedings: [Feeding]
+}
+
+input PetInput {
+  name: String!
+  feedings: [FeedingInput]
+}
+
+type User {
+  _id: ID!
+  name: String!
+  email: String!
+  password: String!
+  pets: [Pet]
+}
+input UserInput {
+  _id: ID
+  name: String
+  email: String
+  password: String
+  pets: [PetInput]
+}
+
+type Mutation {
+  signup(name: String!, email: String!, password: String!): User
+  login(email: String!, password: String!): User
+}
+
+type Query {
+  getUsers: [User]
+  getAccountSettings(userId: ID!): User
+}

@@ -1,56 +1,113 @@
-import React from 'react'
-import Link from 'next/link'
+import React, { useState, useContext } from 'react';
+import Link from 'next/link';
+import styled from 'styled-components';
+import { UserContext } from '../context/UserContext';
+import Modal from './Modal';
+import LoginForm from './Login/LoginForm';
+import SignupForm from './SignupForm';
+import Logout from './Logout';
+const StyledTitle = styled.h1`
+  padding: 0.5rem;
+  width: 100%;
+  text-align: center;
+`;
+const StyledNav = styled.nav`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
 
-const links = [
-  { href: 'https://zeit.co/now', label: 'ZEIT' },
-  { href: 'https://github.com/zeit/next.js', label: 'GitHub' },
-].map(link => {
-  link.key = `nav-link-${link.href}-${link.label}`
-  return link
-})
+  /* padding: 0.5rem; */
+  justify-content: space-between;
+  .nav-link {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  ${props => props.scrolled && `background: silver`}
+`;
 
-const Nav = () => (
-  <nav>
-    <ul>
-      <li>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-      </li>
-      {links.map(({ key, href, label }) => (
-        <li key={key}>
-          <a href={href}>{label}</a>
+const StyledMenu = styled.ul`
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+  justify-content: ${props =>
+    props.side === 'left' ? 'flex-start' : 'flex-end'};
+  li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  list-style: none;
+  a {
+    text-decoration: none;
+    :visited {
+      color: blue;
+    }
+    :hover {
+      text-decoration: underline;
+      transition: text-decoration 0.2s;
+    }
+  }
+`;
+
+const Nav = () => {
+  const [state, setState] = useContext(UserContext);
+  // const [navState, setNavState] = useState({
+  //   isLoginModalOpen: false,
+  //   isSignupModalOpen: false,
+  // });
+  const toggleLoginModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      isLoginModalOpen: !state.isLoginModalOpen,
+    }));
+  };
+  const toggleSignupModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      isSignupModalOpen: !state.isSignupModalOpen,
+    }));
+  };
+  const closeModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      isLoginModalOpen: false,
+      isSignupModalOpen: false,
+    }));
+  };
+  return (
+    <StyledNav>
+      <StyledTitle>Did you feed the cat?</StyledTitle>
+      <StyledMenu side='right'>
+        <li className='nav-link'>
+          {state.isLoggedIn ? (
+            <Logout />
+          ) : (
+            <button onClick={toggleLoginModal}>Login</button>
+          )}
+          {state.isLoginModalOpen && (
+            <Modal closeModal={closeModal}>
+              <LoginForm />
+            </Modal>
+          )}
+          {/* Prefetching is set to true automatically, and is only in production mode. */}
         </li>
-      ))}
-    </ul>
+        <li className='nav-link'>
+          {/* <Link href='/signup'> */}
+          <button onClick={toggleSignupModal}>Signup</button>
+          {/* </Link> */}
+          {state.isSignupModalOpen && (
+            <Modal closeModal={closeModal}>
+              <SignupForm />
+            </Modal>
+          )}
+        </li>
+      </StyledMenu>
+    </StyledNav>
+  );
+};
 
-    <style jsx>{`
-      :global(body) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
-          Helvetica, sans-serif;
-      }
-      nav {
-        text-align: center;
-      }
-      ul {
-        display: flex;
-        justify-content: space-between;
-      }
-      nav > ul {
-        padding: 4px 16px;
-      }
-      li {
-        display: flex;
-        padding: 6px 8px;
-      }
-      a {
-        color: #067df7;
-        text-decoration: none;
-        font-size: 13px;
-      }
-    `}</style>
-  </nav>
-)
-
-export default Nav
+export default Nav;
