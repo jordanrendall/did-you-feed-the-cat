@@ -1,10 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { FeedingSchema } from '../feedings/feedings';
-
-export const PetSchema = new Schema({
-  name: { type: String, required: true },
-  feedings: { type: [FeedingSchema], required: false },
-});
 
 export const UserSchema = new Schema({
   name: {
@@ -18,9 +12,10 @@ export const UserSchema = new Schema({
   password: {
     type: String,
     required: false,
+    select: false,
   },
 
-  pets: { type: [PetSchema], required: false },
+  petIds: { type: [String], required: false },
 });
 
 export default mongoose.models.users || mongoose.model('users', UserSchema);

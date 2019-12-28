@@ -22,14 +22,12 @@ export const usersMutations = {
     async login(_, { email, password }) {
       const user = await Users.findOne({
         email,
-      });
+      }).select('+password');
       if (!user) throw new Error('No user with those credentials found.');
 
       const providedPassword = password;
       const isLoggedIn = await bcrypt.compare(providedPassword, user.password);
       if (!isLoggedIn) throw new Error('Password incorrect');
-      console.log('Logged in');
-      delete user.password;
 
       return user;
     },

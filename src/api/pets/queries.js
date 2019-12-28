@@ -1,24 +1,16 @@
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
-import Users from './users';
+import Users from '../users/users';
+import Pets from './pets';
 
-export const usersQueries = {
+export const petsQueries = {
   Query: {
-    async getUsers() {},
-
-    async getAccountSettings(_, { userId }) {
-      try {
-        console.log(userId);
-        const user = await Users.findById({
-          _id: userId,
-        });
-        console.log(user);
-
-        return user;
-      } catch (e) {
-        console.log(e);
-        throw new Error('No workouts found.');
-      }
+    async getPets(_, { userId }) {
+      const user = await Users.findById(userId);
+      console.log(user);
+      const pets = await Pets.find({ _id: { $in: [...user.petIds] } });
+      console.log(pets);
+      return pets;
     },
   },
   Date: new GraphQLScalarType({

@@ -10,12 +10,17 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: var(-bg);
 `;
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    -bg: '#00ced1';
+  }
   body {
     padding: 0;
     margin: 0;
+    background: var(-bg);
   }
   * {
     box-sizing: border-box;

@@ -5,6 +5,10 @@ export const FeedingSchema = new Schema({
     type: String,
     required: true,
   },
+  petId: {
+    type: String,
+    required: true,
+  },
   timestamp: {
     type: Date,
     required: true,

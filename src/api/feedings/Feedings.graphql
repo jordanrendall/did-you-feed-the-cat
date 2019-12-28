@@ -11,7 +11,7 @@ type Feeding {
 input FeedingInput {
   userId: ID!
   petId: ID!
-  timestamp: Date!
+  timestamp: Date
   foodType: String!
 }
 

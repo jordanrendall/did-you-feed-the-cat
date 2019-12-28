@@ -1,5 +1,10 @@
 import React from 'react';
 import CheckIfLoggedIn from '../components/Login/CheckIfLoggedIn';
-const Home = () => <CheckIfLoggedIn>Test</CheckIfLoggedIn>;
+import GetPets from '../components/GetPets';
+const Home = () => (
+  <CheckIfLoggedIn>
+    <GetPets />
+  </CheckIfLoggedIn>
+);
 
 export default Home;
