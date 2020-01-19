@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import LogFeeding from './LogFeeding';
 import AddPet from './AddPet';
 import RemovePetFromUser from './RemovePetFromUser';
+import { formatDate } from '../lib/dateFunctions';
 
 export const GET_PETS = gql`
   query GET_PETS($userId: ID!) {
@@ -47,7 +48,7 @@ const GetPets = () => {
                   <td>
                     {pet.feedings.length > 0
                       ? `${pet.feedings[pet.feedings.length - 1].foodType} @ 
-                ${pet.feedings[pet.feedings.length - 1].timestamp}`
+                ${formatDate(pet.feedings[pet.feedings.length - 1].timestamp)}`
                       : 'None'}
                   </td>
                   <td>
