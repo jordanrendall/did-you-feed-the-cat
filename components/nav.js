@@ -6,6 +6,7 @@ import Modal from './Modal';
 import LoginForm from './Login/LoginForm';
 import SignupForm from './SignupForm';
 import Logout from './Logout';
+import JoinUsers from './JoinUsers';
 const StyledTitle = styled.h1`
   padding: 0.5rem;
   width: 100%;
@@ -71,11 +72,18 @@ const Nav = () => {
       isSignupModalOpen: !state.isSignupModalOpen,
     }));
   };
+  const toggleJoinUsersModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      isJoinUsersModalOpen: !state.isJoinUsersModalOpen,
+    }));
+  };
   const closeModal = () => {
     setState(prevState => ({
       ...prevState,
       isLoginModalOpen: false,
       isSignupModalOpen: false,
+      isJoinUsersModalOpen: false,
     }));
   };
   return (
@@ -84,13 +92,22 @@ const Nav = () => {
       <StyledMenu side='right'>
         <li className='nav-link'>
           {state.isLoggedIn ? (
-            <Logout />
+            <>
+              <Logout />
+              <button onClick={toggleJoinUsersModal}>Join another user</button>
+            </>
           ) : (
             <button onClick={toggleLoginModal}>Login</button>
           )}
+
           {state.isLoginModalOpen && (
             <Modal closeModal={closeModal}>
               <LoginForm />
+            </Modal>
+          )}
+          {state.isJoinUsersModalOpen && (
+            <Modal closeModal={closeModal}>
+              <JoinUsers />
             </Modal>
           )}
           {/* Prefetching is set to true automatically, and is only in production mode. */}

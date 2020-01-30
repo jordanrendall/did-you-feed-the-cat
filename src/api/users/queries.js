@@ -5,6 +5,13 @@ import Users from './users';
 export const usersQueries = {
   Query: {
     async getUsers() {},
+    async getJoinRequests(_, { userId }) {
+      const user = await Users.findById(userId);
+
+      if (!user) throw new Error('No user found');
+      console.log(user);
+      return user.joinRequests ? user.joinRequests : [];
+    },
 
     async getAccountSettings(_, { userId }) {
       try {

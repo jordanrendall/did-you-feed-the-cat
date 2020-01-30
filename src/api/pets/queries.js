@@ -7,9 +7,7 @@ export const petsQueries = {
   Query: {
     async getPets(_, { userId }) {
       const user = await Users.findById(userId);
-      console.log(user);
       const pets = await Pets.find({ _id: { $in: [...user.petIds] } });
-      console.log(pets);
       return pets;
     },
   },

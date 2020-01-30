@@ -4,6 +4,7 @@ const defaultState = {
   isLoggedIn: false,
   isSignupModalOpen: false,
   isLoginModalOpen: false,
+  isJoinUsersModalOpen: false,
   user: {
     _id: '',
     name: '',

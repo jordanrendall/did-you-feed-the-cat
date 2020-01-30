@@ -31,5 +31,38 @@ export const usersMutations = {
 
       return user;
     },
+    async joinUsers(_, { userId, email }) {
+      const user = await Users.findOne({
+        email,
+      });
+      if (!user) throw new Error('Request could not be completed.');
+
+      const requestingUser = await Users.findById(userId);
+
+      if (!requestingUser) throw new Error('Unknown error encountered.');
+      const previousJoinRequests = user.joinRequests;
+
+      if (
+        previousJoinRequests &&
+        previousJoinRequests.includes(requestingUser._id)
+      )
+        throw new Error('A request has already been made to this user.');
+
+      const newJoinRequests = [
+        ...previousJoinRequests,
+        {
+          userId,
+          name: requestingUser.name,
+          email: requestingUser.email,
+        },
+      ];
+      console.log(newJoinRequests);
+      const updatedUser = await Users.findOneAndUpdate(
+        { email: email },
+        { joinRequests: newJoinRequests }
+      );
+
+      return requestingUser;
+    },
   },
 };

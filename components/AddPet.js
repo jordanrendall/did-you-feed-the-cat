@@ -7,6 +7,7 @@ import { GET_PETS } from './GetPets';
 
 const StyledAddPet = styled.form`
   display: grid;
+  margin-top: 10%;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-items: center;
@@ -56,13 +57,17 @@ const AddPet = () => {
         submitPet();
       }}
     >
+      <label htmlFor='name'>Pet Name</label>
       <input
         type='text'
         name='name'
         value={formState.name}
         onChange={changeHandler}
+        required
       />
-      <button type='submit'>Add Pet</button>
+      <button className='add-pet-button' type='submit'>
+        Add Pet
+      </button>
     </StyledAddPet>
   );
 };
