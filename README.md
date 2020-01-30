@@ -12,6 +12,7 @@ Currently, the app offers the following features:
 - add/remove pets per user
 - log feeding for a given pet
 - display last feeding for each pet
+- send a request to connect with another user (via their email)
 
 > Note: you will need to rename the `sample.env` file to `.env` and set an appropriate mongodb connection string as well as a production endpoint if applicable.
 
