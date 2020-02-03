@@ -8,7 +8,6 @@ export const feedingQueries = {
       const lastFeeding = await Feedings.find({ petId })
         .sort('timestamp', -1)
         .limit(1);
-      console.log(lastFeeding);
     },
   },
   Date: new GraphQLScalarType({

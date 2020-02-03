@@ -9,17 +9,14 @@ export const usersQueries = {
       const user = await Users.findById(userId);
 
       if (!user) throw new Error('No user found');
-      console.log(user);
       return user.joinRequests ? user.joinRequests : [];
     },
 
     async getAccountSettings(_, { userId }) {
       try {
-        console.log(userId);
         const user = await Users.findById({
           _id: userId,
         });
-        console.log(user);
 
         return user;
       } catch (e) {

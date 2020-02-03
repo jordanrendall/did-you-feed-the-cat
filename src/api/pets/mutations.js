@@ -7,10 +7,8 @@ export const petsMutations = {
     async addPet(_, { userId, name }) {
       const pet = await Pets.create({ name });
       if (!pet) throw new Error('Pet could not be added.');
-      console.log(pet._id);
       const user = await Users.findById(userId);
       if (!user) throw new Error('No user found.');
-      console.log(user.petIds);
       const updatedUser = await Users.update(
         { _id: user._id },
         { petIds: [...user.petIds, pet._id] }

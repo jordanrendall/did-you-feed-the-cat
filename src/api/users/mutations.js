@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 export const usersMutations = {
   Mutation: {
     async signup(_, { name, email, password }) {
-      console.log(`Signing up ${(name, email)}`);
       const user = await Users.findOne({
         email,
       });
@@ -56,7 +55,6 @@ export const usersMutations = {
           email: requestingUser.email,
         },
       ];
-      console.log(newJoinRequests);
       const updatedUser = await Users.findOneAndUpdate(
         { email: email },
         { joinRequests: newJoinRequests }

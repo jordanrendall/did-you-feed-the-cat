@@ -8,7 +8,6 @@ export const feedingMutations = {
       const user = await Users.findById(feeding.userId);
       if (!user) throw new Error('User does not exist');
       const now = +new Date();
-      console.log(now);
       const loggedFeeding = await Feedings.create({
         ...feeding,
         timestamp: now,
