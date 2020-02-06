@@ -46,7 +46,7 @@ const AddPet = () => {
     }));
   };
   const submitPet = async e => {
-    await addPet();
+    await addPet().catch();
     setFormState(defaultState);
   };
   return (
