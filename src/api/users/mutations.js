@@ -19,6 +19,7 @@ export const usersMutations = {
       return createdUser;
     },
     async login(_, { email, password }) {
+      console.log('logging in');
       const user = await Users.findOne({
         email,
       }).select('+password');

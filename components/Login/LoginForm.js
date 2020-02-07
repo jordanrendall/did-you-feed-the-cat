@@ -33,7 +33,9 @@ const LoginForm = () => {
   });
   const handleSubmit = e => {
     e.preventDefault();
-    login().catch(e => {});
+    login().catch(e => {
+      console.log(e);
+    });
   };
   useEffect(() => {
     if (error) {
