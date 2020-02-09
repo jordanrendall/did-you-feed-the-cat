@@ -21,6 +21,7 @@
     "graphql-tag": "^2.10.1",
     "graphql-toolkit": "^0.6.7",
     "isomorphic-unfetch": "^3.0.0",
+    "mongodb": "^3.5.2",
     "mongoose": "^5.8.11",
     "next": "9.1.2",
     "react": "16.11.0",
