@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/react-hooks';
 import Error from '../components/Error';
 import Form from './styles/FormStyles';
 import { UserContext } from '../context/UserContext';
+import Button from './Button';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -125,7 +126,9 @@ const SignupForm = () => {
         onChange={handleChange}
         required
       />
-      <input type='submit' value='Sign Up' />
+      <Button primary type='submit' value='Sign Up'>
+        Sign Up
+      </Button>
       {error && signupFormState.showError && <Error error={error} />}
     </Form>
   );

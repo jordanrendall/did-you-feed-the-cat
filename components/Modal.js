@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
+import { colours, sizes } from './Utilities';
 const OuterModal = styled.article`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  /* background: rgba(0, 0, 0, 0.6); */
+  background: ${colours(0, 3)};
   z-index: 0;
   /* pointer-events: none; */
 `;
@@ -21,8 +22,8 @@ const InnerModal = styled.article`
   /* width: 25vw; */
   /* height: 25vw; */
   z-index: 2;
-  background: white;
-  border-radius: 1rem;
+  background: ${colours(0, 2)};
+  border-radius: ${sizes(3)};
   display: flex;
   flex-direction: column;
   justify-content: center;

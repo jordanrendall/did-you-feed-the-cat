@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../../context/UserContext';
 import Error from '../Error';
 import Form from '../styles/FormStyles';
-
+import Button from '../Button';
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -97,7 +97,9 @@ const LoginForm = () => {
         // required
       />
 
-      <input type='submit' value='Log In' />
+      <Button primary type='submit' value='Log In'>
+        Log In
+      </Button>
       {error && loginFormState.showError && <Error error={error} />}
     </Form>
   );

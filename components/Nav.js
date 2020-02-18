@@ -7,10 +7,15 @@ import LoginForm from './Login/LoginForm';
 import SignupForm from './SignupForm';
 import Logout from './Logout';
 import JoinUsers from './JoinUsers';
+import Button from './Button';
+import { colours, sizes } from './Utilities';
 const StyledTitle = styled.h1`
-  padding: 0.5rem;
+  margin-left: ${sizes(2)};
   width: 100%;
-  text-align: center;
+  text-align: left;
+  font-size: ${sizes(5)};
+  color: ${colours(0, 0)};
+  font-weight: 800;
 `;
 const StyledNav = styled.nav`
   position: fixed;
@@ -18,7 +23,7 @@ const StyledNav = styled.nav`
   width: 100%;
   display: grid;
   grid-template-columns: 4fr 1fr;
-
+  background: ${colours(0, 1)};
   /* padding: 0.5rem; */
   justify-content: space-between;
   .nav-link {
@@ -39,6 +44,7 @@ const StyledMenu = styled.ul`
   li {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0.5rem;
   }
   list-style: none;
@@ -94,10 +100,12 @@ const Nav = () => {
           {state.isLoggedIn ? (
             <>
               <Logout />
-              <button onClick={toggleJoinUsersModal}>Join another user</button>
+              <Button onClick={toggleJoinUsersModal}>Join Another User</Button>
             </>
           ) : (
-            <button onClick={toggleLoginModal}>Login</button>
+            <Button primary onClick={toggleLoginModal}>
+              Login
+            </Button>
           )}
 
           {state.isLoginModalOpen && (
@@ -114,7 +122,7 @@ const Nav = () => {
         </li>
         <li className='nav-link'>
           {/* <Link href='/signup'> */}
-          <button onClick={toggleSignupModal}>Signup</button>
+          <Button onClick={toggleSignupModal}>Signup</Button>
           {/* </Link> */}
           {state.isSignupModalOpen && (
             <Modal closeModal={closeModal}>

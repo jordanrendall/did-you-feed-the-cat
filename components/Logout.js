@@ -1,23 +1,20 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
-import styled from 'styled-components';
-const StyledLogoutButton = styled.button``;
+import Button from './Button';
 const Logout = () => {
   const [state, setState] = useContext(UserContext);
-
+  const logout = () => {
+    setState(prevState => ({
+      ...prevState,
+      isLoggedIn: false,
+      user: {},
+      workouts: [],
+    }));
+  };
   return (
-    <StyledLogoutButton
-      onClick={() => {
-        setState(prevState => ({
-          ...prevState,
-          isLoggedIn: false,
-          user: {},
-          workouts: [],
-        }));
-      }}
-    >
+    <Button primary onClick={logout}>
       Logout
-    </StyledLogoutButton>
+    </Button>
   );
 };
 

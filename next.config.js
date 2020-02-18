@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 // Initialize doteenv library
 require('dotenv').config();
-
-module.exports = {
+const withImages = require('next-images');
+module.exports = withImages({
   webpack: config => {
     // Fixes npm packages that depend on `fs` module
     config.node = {
@@ -22,4 +22,4 @@ module.exports = {
     config.plugins.push(new webpack.DefinePlugin(env));
     return config;
   },
-};
+});
