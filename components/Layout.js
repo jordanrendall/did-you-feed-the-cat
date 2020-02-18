@@ -13,9 +13,6 @@ const StyledMain = styled.main`
   align-items: center;
   min-height: 100vh;
   background: var(-bg);
-  p {
-    color: white;
-  }
 `;
 
 const GlobalStyle = createGlobalStyle`
