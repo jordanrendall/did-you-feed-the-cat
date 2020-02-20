@@ -18,6 +18,13 @@ const StyledTitle = styled.h1`
   font-size: ${sizes(5)};
   color: ${colours(0, 0)};
   font-weight: 800;
+  @media (max-width: ${breakpoints.mobile}) {
+    text-align: center;
+    grid-row: 1/2;
+    grid-column: 1/-1;
+    padding: ${sizes(1)};
+    margin: 0;
+  }
 `;
 const StyledNav = styled.nav`
   position: fixed;
@@ -41,8 +48,9 @@ const StyledNav = styled.nav`
   @media (max-width: ${breakpoints.mobile}) {
     .menu-button {
       display: flex;
-      grid-column: 2/3;
     }
+    padding: 0;
+    grid-column: 1/-1;
   }
 
   ${props => props.scrolled && `background: silver`};
@@ -53,6 +61,7 @@ const StyledMenu = styled.ul`
   width: 100%;
   margin: 0;
   padding: 0.5rem;
+
   justify-content: ${props =>
     props.side === 'left' ? 'flex-start' : 'flex-end'};
   li {
@@ -73,7 +82,9 @@ const StyledMenu = styled.ul`
     }
   }
   @media (max-width: ${breakpoints.mobile}) {
-    display: none;
+    grid-row: 2/3;
+    grid-column: 1/-1;
+    justify-content: space-around;
   }
 `;
 
@@ -112,7 +123,7 @@ const Nav = () => {
   return (
     <StyledNav>
       <StyledTitle>Did you feed the cat?</StyledTitle>
-      <MenuButton />
+      {/* <MenuButton /> */}
       <StyledMenu side='right'>
         <li className='nav-link'>
           {state.isLoggedIn ? (

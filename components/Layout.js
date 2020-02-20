@@ -13,6 +13,8 @@ const StyledMain = styled.main`
   align-items: center;
   min-height: 100vh;
   background: var(-bg);
+  align-self: center;
+  justify-self: center;
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -25,7 +27,9 @@ const GlobalStyle = createGlobalStyle`
     background: ${colours(0, 2)};
     color: ${colours(0, 0)};
     /* background: var(-bg); */
-    
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
   }
   html { 
   /* background: url(images/catSilhouette.jpg) no-repeat left left fixed;  */
