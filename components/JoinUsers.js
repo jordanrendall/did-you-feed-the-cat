@@ -5,6 +5,9 @@ import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
 import Error from './Error';
+import Button from './Button';
+import Form from './styles/FormStyles';
+
 const StyledJoinUsers = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -71,7 +74,14 @@ const JoinUsers = () => {
     }));
   };
   return (
-    <StyledJoinUsers
+    // <StyledJoinUsers
+    //   onSubmit={e => {
+    //     e.preventDefault();
+    //     submitJoinRequest();
+    //   }}
+    // >
+    <Form
+      method='POST'
       onSubmit={e => {
         e.preventDefault();
         submitJoinRequest();
@@ -86,11 +96,12 @@ const JoinUsers = () => {
         onChange={changeHandler}
         onFocus={clearError}
       />
-      <button className='join-user-button' type='submit'>
+      <Button primary className='join-user-button' type='submit'>
         Send Join Request
-      </button>
+      </Button>
       {formState.showError && <Error error={error} />}
-    </StyledJoinUsers>
+      {/* </StyledJoinUsers> */}
+    </Form>
   );
 };
 

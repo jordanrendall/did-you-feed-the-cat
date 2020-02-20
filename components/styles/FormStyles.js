@@ -3,30 +3,34 @@ import Button from '../Button';
 import { colours, sizes } from '../Utilities';
 
 const Form = styled.form`
-  padding: 0.5rem;
-  height: auto;
-  border-radius: 0.5rem;
+  padding: ${sizes(3)};
+  height: 100%;
+  border-radius: ${sizes(3)};
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   background: ${colours(0, 2)};
-  .form-input {
-    padding: 0.5rem;
-    /* border-radius: 0.5rem; */
-    margin: 0.5rem;
-  }
+  
+  input{
+
+  margin: ${sizes(2)};
+  } 
   input:not([type='submit']) {
-    border-radius: 0.5rem;
+    border-radius: ${sizes(3)};
     border-style: none;
     background: ${colours(0, 1)};
+    /* height: ${sizes(5)}; */
+    font-size: ${sizes(3)};
+    padding: ${sizes(2)};
     /* background-color: rgba(232, 240, 254, 1); */
   }
-  input[type='submit'] {
+ 
+  /* input[type='submit'] {
     padding: 0.5rem;
-    border-radius: 4px;
+    border-radius: 
     background-color: rgba(0, 0, 0, 0.2);
-  }
+  } */
 `;
 
 export default Form;

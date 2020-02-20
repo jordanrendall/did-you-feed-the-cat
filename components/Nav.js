@@ -8,10 +8,12 @@ import SignupForm from './SignupForm';
 import Logout from './Logout';
 import JoinUsers from './JoinUsers';
 import Button from './Button';
-import { colours, sizes } from './Utilities';
+import { colours, sizes, breakpoints } from './Utilities';
+import MenuButton from './MenuButton';
+
 const StyledTitle = styled.h1`
   margin-left: ${sizes(2)};
-  width: 100%;
+  /* width: 100%; */
   text-align: left;
   font-size: ${sizes(5)};
   color: ${colours(0, 0)};
@@ -19,6 +21,7 @@ const StyledTitle = styled.h1`
 `;
 const StyledNav = styled.nav`
   position: fixed;
+  box-sizing: border-box;
   top: 0;
   width: 100%;
   display: grid;
@@ -26,12 +29,23 @@ const StyledNav = styled.nav`
   background: ${colours(0, 1)};
   /* padding: 0.5rem; */
   justify-content: space-between;
+  align-items: center;
   .nav-link {
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
-  ${props => props.scrolled && `background: silver`}
+  .menu-button {
+    display: none;
+  }
+  @media (max-width: ${breakpoints.mobile}) {
+    .menu-button {
+      display: flex;
+      grid-column: 2/3;
+    }
+  }
+
+  ${props => props.scrolled && `background: silver`};
 `;
 
 const StyledMenu = styled.ul`
@@ -57,6 +71,9 @@ const StyledMenu = styled.ul`
       text-decoration: underline;
       transition: text-decoration 0.2s;
     }
+  }
+  @media (max-width: ${breakpoints.mobile}) {
+    display: none;
   }
 `;
 
@@ -95,12 +112,12 @@ const Nav = () => {
   return (
     <StyledNav>
       <StyledTitle>Did you feed the cat?</StyledTitle>
+      <MenuButton />
       <StyledMenu side='right'>
         <li className='nav-link'>
           {state.isLoggedIn ? (
             <>
               <Logout />
-              <Button onClick={toggleJoinUsersModal}>Join Another User</Button>
             </>
           ) : (
             <Button primary onClick={toggleLoginModal}>
@@ -113,11 +130,17 @@ const Nav = () => {
               <LoginForm />
             </Modal>
           )}
+        </li>
+        <li className='nav-link'>
+          {state.isLoggedIn && (
+            <Button onClick={toggleJoinUsersModal}>Join User</Button>
+          )}
           {state.isJoinUsersModalOpen && (
             <Modal closeModal={closeModal}>
               <JoinUsers />
             </Modal>
           )}
+
           {/* Prefetching is set to true automatically, and is only in production mode. */}
         </li>
         <li className='nav-link'>

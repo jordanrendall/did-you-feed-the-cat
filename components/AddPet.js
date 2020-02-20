@@ -4,16 +4,23 @@ import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
+import Button from './Button';
+import Form from './styles/FormStyles';
+import { sizes, colours } from './Utilities';
 
-const StyledAddPet = styled.form`
-  display: grid;
-  margin-top: 10%;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-  .add-pet-button {
-    grid-row: 2/3;
-    grid-column: 1/-1;
+const StyledAddPet = styled.article`
+  form {
+    display: grid;
+    border: 2px solid ${colours(0, 0)};
+    margin-top: ${sizes(4)};
+    grid-template-columns: auto 1fr auto;
+    grid-gap: ${sizes(2)};
+    justify-content: center;
+    align-items: center;
+    /* .add-pet-button {
+      grid-row: 2/3;
+      grid-column: 1/-1;
+    } */
   }
 `;
 
@@ -50,24 +57,27 @@ const AddPet = () => {
     setFormState(defaultState);
   };
   return (
-    <StyledAddPet
-      onSubmit={e => {
-        e.preventDefault();
-        // addPet();
-        submitPet();
-      }}
-    >
-      <label htmlFor='name'>Pet Name</label>
-      <input
-        type='text'
-        name='name'
-        value={formState.name}
-        onChange={changeHandler}
-        required
-      />
-      <button className='add-pet-button' type='submit'>
-        Add Pet
-      </button>
+    <StyledAddPet>
+      <Form
+        method='POST'
+        onSubmit={e => {
+          e.preventDefault();
+          // addPet();
+          submitPet();
+        }}
+      >
+        <label htmlFor='name'>Pet Name</label>
+        <input
+          type='text'
+          name='name'
+          value={formState.name}
+          onChange={changeHandler}
+          required
+        />
+        <Button primary className='add-pet-button' type='submit'>
+          Add Pet
+        </Button>
+      </Form>
     </StyledAddPet>
   );
 };

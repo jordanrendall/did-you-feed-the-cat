@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     background: ${colours(0, 2)};
+    color: ${colours(0, 0)};
     /* background: var(-bg); */
     
   }

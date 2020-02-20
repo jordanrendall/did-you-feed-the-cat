@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 import { sizes, colours, elevation } from './Utilities';
 const ButtonStyles = styled.button`
-  background: ${props => (props.primary ? colours(0, 0) : colours(0, 2))};
-  color: ${props => (props.primary ? colours(0, 2) : colours(0, 0))};
+  background: ${props =>
+    props.primary
+      ? colours(props.danger ? 1 : 0, 0)
+      : colours(props.danger ? 1 : 0, 2)};
+  color: ${props =>
+    props.primary
+      ? colours(props.danger ? 1 : 0, 2)
+      : colours(props.danger ? 1 : 0, 0)};
   box-shadow: ${elevation[1]};
   border-radius: ${sizes(2)};
   border-style: none;

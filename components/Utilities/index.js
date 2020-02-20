@@ -7,4 +7,5 @@ import sizes from './sizes';
 
 export * from './colours';
 export * from './position';
+export * from './breakpoints';
 export { sizes, elevation, transition, colours };

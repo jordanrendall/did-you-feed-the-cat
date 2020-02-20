@@ -15,6 +15,7 @@ const StyledPrompt = styled.article`
   p {
     color: ${colours(0, 0)};
     font-size: ${sizes(5)};
+    text-align: center;
   }
   border-radius: ${sizes(2)};
 `;

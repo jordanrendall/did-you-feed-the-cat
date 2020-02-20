@@ -7,6 +7,7 @@ import LogFeeding from './LogFeeding';
 import AddPet from './AddPet';
 import RemovePetFromUser from './RemovePetFromUser';
 import { formatDate } from '../lib/dateFunctions';
+import Table from './styles/TableStyles';
 
 export const GET_PETS = gql`
   query GET_PETS($userId: ID!) {
@@ -30,7 +31,7 @@ const GetPets = () => {
   const pets = data.getPets;
   return (
     <>
-      <table>
+      <Table>
         <thead>
           <tr>
             <th>Pet Name</th>
@@ -61,7 +62,7 @@ const GetPets = () => {
               );
             })}
         </tbody>
-      </table>
+      </Table>
       <AddPet />
     </>
   );

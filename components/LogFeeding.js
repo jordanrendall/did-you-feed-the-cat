@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
+import Button from './Button';
 
 const LOG_FEEDING_MUTATION = gql`
   mutation LOG_FEEDING_MUTATION($feeding: FeedingInput!) {
@@ -20,13 +21,14 @@ const LogFeeding = ({ id, foodType = 'wet' }) => {
     refetchQueries: [{ query: GET_PETS, variables: { userId: user._id } }],
   });
   return (
-    <button
+    <Button
+      primary
       onClick={() => {
         logFeeding();
       }}
     >
       Log Feeding
-    </button>
+    </Button>
   );
 };
 

@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
+import Button from './Button';
 
 const REMOVE_PET_FROM_USER_MUTATION = gql`
   mutation REMOVE_PET_FROM_USER_MUTATION($userId: ID!, $petId: ID!) {
@@ -19,13 +20,15 @@ const RemovePetFromUser = ({ id }) => {
     refetchQueries: [{ query: GET_PETS, variables: { userId: user._id } }],
   });
   return (
-    <button
+    <Button
+      danger
+      primary
       onClick={() => {
         removePetFromUser();
       }}
     >
       Remove Pet
-    </button>
+    </Button>
   );
 };
 
