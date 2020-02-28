@@ -13,7 +13,7 @@ const REMOVE_PET_FROM_USER_MUTATION = gql`
   }
 `;
 
-const RemovePetFromUser = ({ id }) => {
+const RemovePetFromUser = ({ id, disabled }) => {
   const [{ user }] = useContext(UserContext);
   const [removePetFromUser] = useMutation(REMOVE_PET_FROM_USER_MUTATION, {
     variables: { userId: user._id, petId: id },
@@ -23,11 +23,12 @@ const RemovePetFromUser = ({ id }) => {
     <Button
       danger
       primary
+      disabled={disabled}
       onClick={() => {
-        removePetFromUser();
+        removePetFromUser().catch();
       }}
     >
-      Remove Pet
+      X
     </Button>
   );
 };

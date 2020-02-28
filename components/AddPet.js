@@ -9,19 +9,20 @@ import Form from './styles/FormStyles';
 import { sizes, colours } from './Utilities';
 
 const StyledAddPet = styled.article`
-  form {
-    display: grid;
-    border: 2px solid ${colours(0, 0)};
-    margin-top: ${sizes(4)};
-    grid-template-columns: auto 1fr auto;
-    grid-gap: ${sizes(2)};
-    justify-content: center;
-    align-items: center;
-    /* .add-pet-button {
+  /* form { */
+  display: grid;
+  border: 2px solid ${colours(0, 0)};
+  margin-top: ${sizes(4)};
+  grid-template-columns: auto auto auto;
+  grid-gap: ${sizes(2)};
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  /* .add-pet-button {
       grid-row: 2/3;
       grid-column: 1/-1;
     } */
-  }
+  /* } */
 `;
 
 const ADD_PET_MUTATION = gql`

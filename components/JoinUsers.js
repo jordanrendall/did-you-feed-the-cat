@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
-import { GET_PETS } from './GetPets';
+import { GET_PETS } from './PetsTable';
 import Error from './Error';
 import Button from './Button';
 import Form from './styles/FormStyles';
@@ -36,10 +36,11 @@ const JoinUsers = () => {
     email: '',
     error: {},
     clearError: false,
+    sent: false,
   };
 
   const [formState, setFormState] = useState(defaultState);
-  const [joinUsers, { error }] = useMutation(JOIN_USERS_MUTATION, {
+  const [joinUsers, { loading, error }] = useMutation(JOIN_USERS_MUTATION, {
     variables: { userId: user._id, email: formState.email },
   });
 
@@ -54,7 +55,7 @@ const JoinUsers = () => {
   };
   const submitJoinRequest = async e => {
     await joinUsers().catch(e => {});
-    setFormState(defaultState);
+    setFormState({ ...defaultState, sent: true });
   };
   useEffect(() => {
     if (error) {
@@ -71,6 +72,7 @@ const JoinUsers = () => {
       ...prevState,
       error: {},
       showError: false,
+      sent: false,
     }));
   };
   return (
@@ -86,7 +88,9 @@ const JoinUsers = () => {
         e.preventDefault();
         submitJoinRequest();
       }}
+      disabled={loading}
     >
+      {formState.sent && <p>Sent!</p>}
       <label htmlFor='email'>User's Email</label>
 
       <input

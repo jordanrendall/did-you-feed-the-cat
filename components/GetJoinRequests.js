@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { colours, sizes } from './Utilities';
-import Button from './Button';
+
+import AcceptJoinRequest from './AcceptJoinRequest';
 
 const StyledJoinRequests = styled.article`
   display: grid;
@@ -21,7 +22,7 @@ const Title = styled.h3`
   grid-column: 1/-1;
   text-align: center;
 `;
-const GET_JOIN_REQUESTS = gql`
+export const GET_JOIN_REQUESTS = gql`
   query GET_JOIN_REQUESTS($userId: ID!) {
     getJoinRequests(userId: $userId) {
       userId
@@ -33,7 +34,6 @@ const GET_JOIN_REQUESTS = gql`
 
 const GetJoinRequests = () => {
   const [{ user }] = useContext(UserContext);
-
   const { data, loading, error } = useQuery(GET_JOIN_REQUESTS, {
     variables: { userId: user._id },
   });
@@ -49,7 +49,10 @@ const GetJoinRequests = () => {
             <p>
               {`${request.name} `}&mdash;{` ${request.email}`}
             </p>
-            <Button id={request.userId}>Accept</Button>
+            <AcceptJoinRequest
+              userId={user._id}
+              requestingUser={request.userId}
+            />
           </React.Fragment>
         );
       })}

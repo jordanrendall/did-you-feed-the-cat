@@ -6,8 +6,10 @@ const Table = styled.table`
   border-collapse: collapse;
   height: auto;
   border-radius: ${sizes(3)};
+  width: 95%;
+    table-layout:fixed;
   /* display: grid; */  
-  /* border-spacing: 0; */
+  border-spacing: ${sizes(1)};
 
   justify-content: center;
   align-items: center;

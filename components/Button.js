@@ -22,6 +22,7 @@ const ButtonStyles = styled.button`
     text-decoration: underline;
     transition: text-decoration 0.3s;
   }
+  ${props => props.autoSize && `width: 100%;`}
 `;
 
 const Button = props => {

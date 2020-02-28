@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { UserContext } from '../context/UserContext';
 import gql from 'graphql-tag';
+import { UserContext } from '../context/UserContext';
 import { formatDate } from '../lib/dateFunctions';
 import LogFeeding from './LogFeeding';
 import RemovePetFromUser from './RemovePetFromUser';
-export const GET_PETS = gql`
-  query GET_PETS($userId: ID!) {
-    getPets(userId: $userId) {
+
+export const GET_JOINED_PETS = gql`
+  query GET_JOINED_PETS($userId: ID!) {
+    getJoinedPets(userId: $userId) {
       _id
       #   ownerName
       name
@@ -18,21 +19,23 @@ export const GET_PETS = gql`
     }
   }
 `;
-const GetPets = () => {
+const GetJoinedPets = () => {
   const [{ user }] = useContext(UserContext);
 
-  const { data, loading, error } = useQuery(GET_PETS, {
+  const { data, loading, error } = useQuery(GET_JOINED_PETS, {
     variables: { userId: user._id },
   });
+
   if (loading || error) return <></>;
-  const pets = data.getPets;
+  const pets = data.getJoinedPets;
+
   return (
     <>
       {pets &&
         pets.map((pet, i) => {
           return (
             <tr key={`pet-${i}`}>
-              <td>Me</td>
+              <td>Other</td>
               <td>{pet.name}</td>
               <td>
                 {pet.feedings.length > 0
@@ -43,9 +46,7 @@ const GetPets = () => {
               <td>
                 <LogFeeding id={pet._id} />
               </td>
-              <td>
-                <RemovePetFromUser id={pet._id} />
-              </td>
+              <td>{/* <RemovePetFromUser disabled id={pet._id} /> */}</td>
             </tr>
           );
         })}
@@ -53,4 +54,4 @@ const GetPets = () => {
   );
 };
 
-export default GetPets;
+export default GetJoinedPets;

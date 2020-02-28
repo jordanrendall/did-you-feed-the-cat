@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { UserContext } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
+import { GET_JOINED_PETS } from './GetJoinedPets';
 import Button from './Button';
 
 const LOG_FEEDING_MUTATION = gql`
@@ -18,16 +19,20 @@ const LogFeeding = ({ id, foodType = 'wet' }) => {
 
   const [logFeeding] = useMutation(LOG_FEEDING_MUTATION, {
     variables: { feeding: { userId: user._id, petId: id, foodType } },
-    refetchQueries: [{ query: GET_PETS, variables: { userId: user._id } }],
+    refetchQueries: [
+      { query: GET_PETS, variables: { userId: user._id } },
+      { query: GET_JOINED_PETS, variables: { userId: user._id } },
+    ],
   });
   return (
     <Button
       primary
+      autoSize
       onClick={() => {
-        logFeeding();
+        logFeeding().catch();
       }}
     >
-      Log Feeding
+      Feed
     </Button>
   );
 };

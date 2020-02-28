@@ -27,7 +27,7 @@ const StyledTitle = styled.h1`
   }
 `;
 const StyledNav = styled.nav`
-  position: fixed;
+  position: sticky;
   box-sizing: border-box;
   top: 0;
   width: 100%;

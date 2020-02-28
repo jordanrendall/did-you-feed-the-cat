@@ -7,6 +7,7 @@ type User {
   password: String!
   petIds: [ID]
   joinRequests: [JoinRequestUser]
+  joinedUsers: [ID]
 }
 input UserInput {
   _id: ID
@@ -15,15 +16,16 @@ input UserInput {
   password: String
   petIds: [ID]
   joinRequests: [JoinRequestUserInput]
+  joinedUsers: [ID]
 }
 type JoinRequestUser {
   _id: ID!
-  userId: String!
+  userId: ID!
   name: String!
   email: String!
 }
 input JoinRequestUserInput {
-  userId: String!
+  userId: ID!
   name: String!
   email: String!
 }
@@ -32,6 +34,7 @@ type Mutation {
   signup(name: String!, email: String!, password: String!): User
   login(email: String!, password: String!): User
   joinUsers(userId: ID!, email: String!): User
+  acceptJoinRequest(userId: ID!, requestingUser: ID!): Boolean
 }
 
 type Query {

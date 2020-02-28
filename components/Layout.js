@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Nav from './Nav';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -11,10 +11,13 @@ const StyledMain = styled.main`
   padding: 2rem;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* height: 80vh; */
   background: var(-bg);
   align-self: center;
   justify-self: center;
+  /* overflow-y: scroll; */
+  /* margin: 10%; */
+  /* top: 0; */
 `;
 
 const GlobalStyle = createGlobalStyle`

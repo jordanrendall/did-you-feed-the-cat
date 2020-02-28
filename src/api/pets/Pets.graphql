@@ -1,11 +1,15 @@
 # All of this will be available to the API
 type Pet {
   _id: ID!
+  ownerID: ID!
+  ownerName: String!
   name: String!
   feedings: [Feeding]
 }
 
 input PetInput {
+  ownerID: ID!
+  ownerName: String!
   name: String!
   feedings: [FeedingInput]
 }
@@ -20,5 +24,6 @@ type Mutation {
 type Query {
   getUsers: [User]
   getPets(userId: ID!): [Pet]
+  getJoinedPets(userId: ID!): [Pet]
   getAccountSettings(userId: ID!): User
 }

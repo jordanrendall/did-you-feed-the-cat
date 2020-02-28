@@ -30,6 +30,7 @@ export const UserSchema = new Schema({
 
   petIds: { type: [String], required: false },
   joinRequests: { type: [JoinRequestUserSchema], required: false },
+  joinedUsers: { type: [String], required: false },
 });
 
 export default mongoose.models.users || mongoose.model('users', UserSchema);
