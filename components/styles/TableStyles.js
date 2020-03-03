@@ -17,10 +17,8 @@ const Table = styled.table`
   background: ${colours(0, 2)};
   td{
       padding: ${sizes(2)};
-  }
-  th,
-  td {
     border-bottom: 1px solid ${colours(0, 0)};
+    border-top: 1px solid ${colours(0, 0)};
   }
   tr{
       padding: ${sizes(3)};

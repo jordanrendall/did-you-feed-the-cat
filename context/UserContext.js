@@ -5,14 +5,14 @@ const defaultState = {
   isSignupModalOpen: false,
   isLoginModalOpen: false,
   isJoinUsersModalOpen: false,
+  isPetModalOpen: false,
+  windowSize: 0,
   user: {
     _id: '',
     name: '',
     email: '',
   },
-  workouts: [],
-  isGettingWorkouts: true,
-  workoutMonthScope: 24,
+  joinRequests: [{}],
 };
 
 export const UserContext = React.createContext(defaultState);

@@ -10,6 +10,8 @@ import JoinUsers from './JoinUsers';
 import Button from './Button';
 import { colours, sizes, breakpoints } from './Utilities';
 import MenuButton from './MenuButton';
+import UserRequests from './UserRequests';
+import JoinRequestsTable from './JoinRequestsTable';
 
 const StyledTitle = styled.h1`
   margin-left: ${sizes(2)};
@@ -18,7 +20,7 @@ const StyledTitle = styled.h1`
   font-size: ${sizes(5)};
   color: ${colours(0, 0)};
   font-weight: 800;
-  @media (max-width: ${breakpoints.mobile}) {
+  @media (max-width: ${breakpoints.mobile}px) {
     text-align: center;
     grid-row: 1/2;
     grid-column: 1/-1;
@@ -45,7 +47,7 @@ const StyledNav = styled.nav`
   .menu-button {
     display: none;
   }
-  @media (max-width: ${breakpoints.mobile}) {
+  @media (max-width: ${breakpoints.mobile}px) {
     .menu-button {
       display: flex;
     }
@@ -81,7 +83,7 @@ const StyledMenu = styled.ul`
       transition: text-decoration 0.2s;
     }
   }
-  @media (max-width: ${breakpoints.mobile}) {
+  @media (max-width: ${breakpoints.mobile}px) {
     grid-row: 2/3;
     grid-column: 1/-1;
     justify-content: space-around;
@@ -90,10 +92,6 @@ const StyledMenu = styled.ul`
 
 const Nav = () => {
   const [state, setState] = useContext(UserContext);
-  // const [navState, setNavState] = useState({
-  //   isLoginModalOpen: false,
-  //   isSignupModalOpen: false,
-  // });
   const toggleLoginModal = () => {
     setState(prevState => ({
       ...prevState,
@@ -144,10 +142,11 @@ const Nav = () => {
         </li>
         <li className='nav-link'>
           {state.isLoggedIn && (
-            <Button onClick={toggleJoinUsersModal}>Join User</Button>
+            <UserRequests toggleModal={toggleJoinUsersModal} />
           )}
           {state.isJoinUsersModalOpen && (
             <Modal closeModal={closeModal}>
+              <JoinRequestsTable />
               <JoinUsers />
             </Modal>
           )}

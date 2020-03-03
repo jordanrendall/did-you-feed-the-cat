@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { UserContext } from '../context/UserContext';
 import { formatDate } from '../lib/dateFunctions';
 import LogFeeding from './LogFeeding';
 import RemovePetFromUser from './RemovePetFromUser';
+import { Cell } from './PetsTable';
+import Modal from './Modal';
 
 export const GET_JOINED_PETS = gql`
   query GET_JOINED_PETS($userId: ID!) {
@@ -20,12 +22,33 @@ export const GET_JOINED_PETS = gql`
   }
 `;
 const GetJoinedPets = () => {
-  const [{ user }] = useContext(UserContext);
+  const [{ user, isPetModalOpen }, setState] = useContext(UserContext);
+  const [petId, setPetId] = useState('');
 
   const { data, loading, error } = useQuery(GET_JOINED_PETS, {
     variables: { userId: user._id },
   });
 
+  const openPetModal = async id => {
+    var win = window,
+      doc = document,
+      docElem = doc.documentElement,
+      body = doc.getElementsByTagName('body')[0],
+      x = win.innerWidth || docElem.clientWidth || body.clientWidth;
+    if (x <= breakpoints.mobile) {
+      setState(prevState => ({
+        ...prevState,
+        isPetModalOpen: !isPetModalOpen,
+      }));
+      setPetId(id);
+    }
+  };
+  const closeModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      isPetModalOpen: false,
+    }));
+  };
   if (loading || error) return <></>;
   const pets = data.getJoinedPets;
 
@@ -34,22 +57,29 @@ const GetJoinedPets = () => {
       {pets &&
         pets.map((pet, i) => {
           return (
-            <tr key={`pet-${i}`}>
-              <td>Other</td>
-              <td>{pet.name}</td>
-              <td>
+            <React.Fragment key={`pet-${i}`}>
+              <Cell onClick={() => openPetModal(pet._id)}>Other</Cell>
+              <Cell onClick={() => openPetModal(pet._id)}>{pet.name}</Cell>
+              <Cell onClick={() => openPetModal(pet._id)}>
                 {pet.feedings.length > 0
                   ? `${pet.feedings[pet.feedings.length - 1].foodType} @ 
-                ${formatDate(pet.feedings[pet.feedings.length - 1].timestamp)}`
+                  ${formatDate(
+                    pet.feedings[pet.feedings.length - 1].timestamp
+                  )}`
                   : 'None'}
-              </td>
-              <td>
+              </Cell>
+              <Cell>
                 <LogFeeding id={pet._id} />
-              </td>
-              <td>{/* <RemovePetFromUser disabled id={pet._id} /> */}</td>
-            </tr>
+              </Cell>
+            </React.Fragment>
           );
         })}
+      {isPetModalOpen && (
+        <Modal closeModal={closeModal}>
+          <LogFeeding id={petId} />
+          <RemovePetFromUser id={petId} />
+        </Modal>
+      )}
     </>
   );
 };

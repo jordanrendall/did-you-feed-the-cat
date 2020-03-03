@@ -36,7 +36,6 @@ export const petsQueries = {
             _id: { $in: [...joinedUser.petIds] },
           });
           joinedUserPets.map(async pet => {
-            console.log(pet.name);
             const petId = pet._id;
             if (pet.ownerName === null) {
               const updatedPet = await Pets.updateOne(
