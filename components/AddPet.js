@@ -10,14 +10,17 @@ import { sizes, colours } from './Utilities';
 
 const StyledAddPet = styled.article`
   /* form { */
-  display: grid;
+  display: flex;
+  flex-direction: column;
   border: 2px solid ${colours(0, 0)};
+  border-radius: ${sizes(2)};
   margin-top: ${sizes(4)};
-  grid-template-columns: auto auto auto;
-  grid-gap: ${sizes(2)};
+  /* grid-template-columns: auto auto auto; */
+  /* grid-gap: ${sizes(2)}; */
   justify-content: center;
   align-items: center;
-  width: 80vw;
+  width: auto;
+  padding: ${sizes(4)};
   /* .add-pet-button {
       grid-row: 2/3;
       grid-column: 1/-1;

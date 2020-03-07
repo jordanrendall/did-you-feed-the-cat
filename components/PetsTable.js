@@ -11,8 +11,11 @@ import { colours, sizes, breakpoints } from './Utilities';
 const Table = styled.section`
   display: flex;
   flex-wrap: wrap;
+  width: 80vw;
   .header {
     order: 0;
+    background: ${colours(0, 1)};
+    font-weight: bold;
   }
 
   @media (max-width: ${breakpoints.mobile}px) {
