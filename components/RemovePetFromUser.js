@@ -13,10 +13,10 @@ const REMOVE_PET_FROM_USER_MUTATION = gql`
   }
 `;
 
-const RemovePetFromUser = ({ id, disabled }) => {
+const RemovePetFromUser = (props, { petId, disabled }) => {
   const [{ user }] = useContext(UserContext);
   const [removePetFromUser] = useMutation(REMOVE_PET_FROM_USER_MUTATION, {
-    variables: { userId: user._id, petId: id },
+    variables: { userId: user._id, petId },
     refetchQueries: [{ query: GET_PETS, variables: { userId: user._id } }],
   });
   return (
@@ -28,7 +28,7 @@ const RemovePetFromUser = ({ id, disabled }) => {
         removePetFromUser().catch();
       }}
     >
-      X
+      {props.fullText ? 'Remove Pet' : 'X'}
     </Button>
   );
 };

@@ -9,7 +9,7 @@ import { breakpoints } from './Utilities';
 import Modal from './Modal';
 import { Cell } from './PetsTable';
 import styled from 'styled-components';
-
+import PetModal from './PetModal';
 const OpensModal = styled.span``;
 
 export const GET_PETS = gql`
@@ -25,25 +25,37 @@ export const GET_PETS = gql`
     }
   }
 `;
-const GetPets = () => {
-  const [{ user, isPetModalOpen }, setState] = useContext(UserContext);
-  const [petId, setPetId] = useState('');
+const GetPets = React.memo(() => {
+  const [
+    { user, isPetModalOpen, currentPetId, currentPetName },
+    setState,
+  ] = useContext(UserContext);
   const { data, loading, error } = useQuery(GET_PETS, {
     variables: { userId: user._id },
   });
 
-  const openPetModal = async id => {
+  const openPetModal = async (id, name) => {
+    console.log(id, name);
+    const petId = id;
+    const petName = name;
     var win = window,
       doc = document,
       docElem = doc.documentElement,
       body = doc.getElementsByTagName('body')[0],
       x = win.innerWidth || docElem.clientWidth || body.clientWidth;
+    console.log(currentPetId);
+
     if (x <= breakpoints.mobile) {
-      setState(prevState => ({
+      await setState(prevState => ({
+        ...prevState,
+        currentPetId: petId,
+        currentPetName: petName,
+      }));
+      console.log(currentPetId);
+      await setState(prevState => ({
         ...prevState,
         isPetModalOpen: !isPetModalOpen,
       }));
-      setPetId(id);
     }
   };
   const closeModal = () => {
@@ -60,9 +72,11 @@ const GetPets = () => {
         pets.map((pet, i) => {
           return (
             <React.Fragment key={`pet-${i}`}>
-              <Cell onClick={() => openPetModal(pet._id)}>Me</Cell>
-              <Cell onClick={() => openPetModal(pet._id)}>{pet.name}</Cell>
-              <Cell onClick={() => openPetModal(pet._id)}>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>Me</Cell>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>
+                {pet.name}
+              </Cell>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>
                 {pet.feedings.length > 0
                   ? `${pet.feedings[pet.feedings.length - 1].foodType} @ 
                   ${formatDate(
@@ -71,23 +85,18 @@ const GetPets = () => {
                   : 'None'}
               </Cell>
               <Cell className='feed-btn'>
-                <LogFeeding id={pet._id} />
+                <LogFeeding petId={pet._id} />
               </Cell>
               <Cell className='remove-btn'>
-                <RemovePetFromUser id={pet._id} />
+                <RemovePetFromUser petId={pet._id} />
               </Cell>
             </React.Fragment>
           );
         })}
 
-      {isPetModalOpen && (
-        <Modal closeModal={closeModal}>
-          <LogFeeding id={petId} />
-          <RemovePetFromUser id={petId} />
-        </Modal>
-      )}
+      {isPetModalOpen && <PetModal close={closeModal} />}
     </>
   );
-};
+});
 
 export default GetPets;

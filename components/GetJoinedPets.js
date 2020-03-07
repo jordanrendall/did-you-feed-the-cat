@@ -1,12 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import { UserContext } from '../context/UserContext';
+import gql from 'graphql-tag';
 import { formatDate } from '../lib/dateFunctions';
 import LogFeeding from './LogFeeding';
 import RemovePetFromUser from './RemovePetFromUser';
-import { Cell } from './PetsTable';
+import { breakpoints } from './Utilities';
 import Modal from './Modal';
+import { Cell } from './PetsTable';
+import styled from 'styled-components';
+import PetModal from './PetModal';
+const OpensModal = styled.span``;
 
 export const GET_JOINED_PETS = gql`
   query GET_JOINED_PETS($userId: ID!) {
@@ -21,26 +25,37 @@ export const GET_JOINED_PETS = gql`
     }
   }
 `;
-const GetJoinedPets = () => {
-  const [{ user, isPetModalOpen }, setState] = useContext(UserContext);
-  const [petId, setPetId] = useState('');
-
+const GetJoinedPets = React.memo(() => {
+  const [
+    { user, isPetModalOpen, currentPetId, currentPetName },
+    setState,
+  ] = useContext(UserContext);
   const { data, loading, error } = useQuery(GET_JOINED_PETS, {
     variables: { userId: user._id },
   });
 
-  const openPetModal = async id => {
+  const openPetModal = async (id, name) => {
+    console.log(id, name);
+    const petId = id;
+    const petName = name;
     var win = window,
       doc = document,
       docElem = doc.documentElement,
       body = doc.getElementsByTagName('body')[0],
       x = win.innerWidth || docElem.clientWidth || body.clientWidth;
+    console.log(currentPetId);
+
     if (x <= breakpoints.mobile) {
-      setState(prevState => ({
+      await setState(prevState => ({
+        ...prevState,
+        currentPetId: petId,
+        currentPetName: petName,
+      }));
+      console.log(currentPetId);
+      await setState(prevState => ({
         ...prevState,
         isPetModalOpen: !isPetModalOpen,
       }));
-      setPetId(id);
     }
   };
   const closeModal = () => {
@@ -51,16 +66,17 @@ const GetJoinedPets = () => {
   };
   if (loading || error) return <></>;
   const pets = data.getJoinedPets;
-
   return (
     <>
       {pets &&
         pets.map((pet, i) => {
           return (
-            <React.Fragment key={`pet-${i}`}>
-              <Cell onClick={() => openPetModal(pet._id)}>Other</Cell>
-              <Cell onClick={() => openPetModal(pet._id)}>{pet.name}</Cell>
-              <Cell onClick={() => openPetModal(pet._id)}>
+            <React.Fragment key={`joined-pet-${i}`}>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>Me</Cell>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>
+                {pet.name}
+              </Cell>
+              <Cell onClick={() => openPetModal(pet._id, pet.name)}>
                 {pet.feedings.length > 0
                   ? `${pet.feedings[pet.feedings.length - 1].foodType} @ 
                   ${formatDate(
@@ -68,20 +84,19 @@ const GetJoinedPets = () => {
                   )}`
                   : 'None'}
               </Cell>
-              <Cell>
-                <LogFeeding id={pet._id} />
+              <Cell className='feed-btn'>
+                <LogFeeding petId={pet._id} />
+              </Cell>
+              <Cell className='remove-btn'>
+                <RemovePetFromUser petId={pet._id} />
               </Cell>
             </React.Fragment>
           );
         })}
-      {isPetModalOpen && (
-        <Modal closeModal={closeModal}>
-          <LogFeeding id={petId} />
-          <RemovePetFromUser id={petId} />
-        </Modal>
-      )}
+
+      {isPetModalOpen && <PetModal close={closeModal} />}
     </>
   );
-};
+});
 
 export default GetJoinedPets;

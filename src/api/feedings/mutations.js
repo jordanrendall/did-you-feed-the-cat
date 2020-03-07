@@ -8,7 +8,7 @@ export const feedingMutations = {
       const user = await Users.findById(feeding.userId);
       if (!user) throw new Error('User does not exist');
       const now = +new Date();
-
+      console.log(feeding);
       if (!user.petIds.includes(feeding.petId)) {
         if (user.joinedUsers.length > 0) {
           const joinedUsers = await Users.find({

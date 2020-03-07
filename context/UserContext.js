@@ -12,6 +12,8 @@ const defaultState = {
     name: '',
     email: '',
   },
+  currentPetId: '',
+  currentPetName: '',
   joinRequests: [{}],
 };
 

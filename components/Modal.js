@@ -30,6 +30,17 @@ const InnerModal = styled.article`
   align-items: center;
   padding: 2rem;
 `;
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-bottom-left-radius: ${sizes(2)};
+  border-top-right-radius: ${sizes(2)};
+  background: ${colours(0, 0)};
+  color: ${colours(0, 2)};
+  padding: ${sizes(2)};
+  border-style: none;
+`;
 const Modal = ({ children, closeModal }) => {
   // useEffect(() => {
   //   const modal = document.getElementsByClassName('inner-modal')[0];
@@ -40,7 +51,10 @@ const Modal = ({ children, closeModal }) => {
   return (
     <>
       <OuterModal onClick={closeModal} />
-      <InnerModal className='inner-modal'>{children}</InnerModal>
+      <InnerModal className='inner-modal'>
+        <CloseButton onClick={closeModal}>X</CloseButton>
+        {children}
+      </InnerModal>
     </>
   );
 };

@@ -14,11 +14,10 @@ const LOG_FEEDING_MUTATION = gql`
   }
 `;
 
-const LogFeeding = ({ id, foodType = 'wet' }) => {
+const LogFeeding = ({ petId, foodType = 'wet' }) => {
+  console.log(petId);
   const [{ user }] = useContext(UserContext);
-
   const [logFeeding] = useMutation(LOG_FEEDING_MUTATION, {
-    variables: { feeding: { userId: user._id, petId: id, foodType } },
     refetchQueries: [
       { query: GET_PETS, variables: { userId: user._id } },
       { query: GET_JOINED_PETS, variables: { userId: user._id } },
@@ -29,7 +28,9 @@ const LogFeeding = ({ id, foodType = 'wet' }) => {
       primary
       autoSize
       onClick={() => {
-        logFeeding().catch();
+        logFeeding({
+          variables: { feeding: { userId: user._id, petId, foodType } },
+        }).catch();
       }}
     >
       Feed
