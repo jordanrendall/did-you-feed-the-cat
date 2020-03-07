@@ -9,8 +9,8 @@ const PetModal = ({ close }) => {
   return (
     <Modal closeModal={close}>
       <p>{currentPetName}</p>
-      <LogFeeding petId={currentPetId} />
-      <RemovePetFromUser fullText petId={currentPetId} />
+      <LogFeeding modal close={close} petId={currentPetId} />
+      <RemovePetFromUser modal close={close} fullText petId={currentPetId} />
     </Modal>
   );
 };

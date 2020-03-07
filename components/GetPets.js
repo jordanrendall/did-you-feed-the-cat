@@ -35,7 +35,6 @@ const GetPets = React.memo(() => {
   });
 
   const openPetModal = async (id, name) => {
-    console.log(id, name);
     const petId = id;
     const petName = name;
     var win = window,
@@ -43,7 +42,6 @@ const GetPets = React.memo(() => {
       docElem = doc.documentElement,
       body = doc.getElementsByTagName('body')[0],
       x = win.innerWidth || docElem.clientWidth || body.clientWidth;
-    console.log(currentPetId);
 
     if (x <= breakpoints.mobile) {
       await setState(prevState => ({
@@ -51,7 +49,6 @@ const GetPets = React.memo(() => {
         currentPetId: petId,
         currentPetName: petName,
       }));
-      console.log(currentPetId);
       await setState(prevState => ({
         ...prevState,
         isPetModalOpen: !isPetModalOpen,

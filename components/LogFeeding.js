@@ -14,23 +14,32 @@ const LOG_FEEDING_MUTATION = gql`
   }
 `;
 
-const LogFeeding = ({ petId, foodType = 'wet' }) => {
-  console.log(petId);
-  const [{ user }] = useContext(UserContext);
+const LogFeeding = (props, { foodType = 'wet' }) => {
+  const [{ user, currentPetId }, setState] = useContext(UserContext);
   const [logFeeding] = useMutation(LOG_FEEDING_MUTATION, {
     refetchQueries: [
       { query: GET_PETS, variables: { userId: user._id } },
       { query: GET_JOINED_PETS, variables: { userId: user._id } },
     ],
   });
+  const petIdToLog = props.modal ? currentPetId : props.petId;
+  let close = () => {};
+  if (props.modal) {
+    close = () => {
+      props.close();
+    };
+  }
   return (
     <Button
       primary
       autoSize
-      onClick={() => {
-        logFeeding({
-          variables: { feeding: { userId: user._id, petId, foodType } },
+      onClick={async () => {
+        await logFeeding({
+          variables: {
+            feeding: { userId: user._id, petId: petIdToLog, foodType },
+          },
         }).catch();
+        close();
       }}
     >
       Feed
