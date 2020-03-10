@@ -44,7 +44,10 @@ const PetsTable = () => {
   const updateJoinRequests = async requests => {
     const update = await setState(prevState => ({
       ...prevState,
-      joinRequests: requests,
+      user: {
+        ...user,
+        joinRequests: requests,
+      },
     }));
   };
 

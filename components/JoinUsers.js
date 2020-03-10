@@ -7,6 +7,8 @@ import { GET_PETS } from './PetsTable';
 import Error from './Error';
 import Button from './Button';
 import Form from './styles/FormStyles';
+import { GET_JOINED_USERS } from './GetJoinedUsers';
+import { GET_JOIN_REQUESTS } from './GetJoinRequests';
 
 const StyledJoinUsers = styled.form`
   display: grid;
@@ -42,6 +44,10 @@ const JoinUsers = () => {
   const [formState, setFormState] = useState(defaultState);
   const [joinUsers, { loading, error }] = useMutation(JOIN_USERS_MUTATION, {
     variables: { userId: user._id, email: formState.email },
+    refetchQueries: [
+      { query: GET_JOINED_USERS, variables: { userId: user._id } },
+      { query: GET_JOIN_REQUESTS, variables: { userId: user._id } },
+    ],
   });
 
   const changeHandler = async e => {
@@ -52,6 +58,7 @@ const JoinUsers = () => {
       ...prevState,
       [name]: value,
     }));
+    clearError();
   };
   const submitJoinRequest = async e => {
     await joinUsers().catch(e => {});
@@ -89,6 +96,7 @@ const JoinUsers = () => {
         submitJoinRequest();
       }}
       disabled={loading}
+      onFocus={clearError}
     >
       {formState.sent && <p>Sent!</p>}
       <label htmlFor='email'>User's Email</label>

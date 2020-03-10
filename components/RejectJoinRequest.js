@@ -6,14 +6,14 @@ import { GET_JOIN_REQUESTS } from './GetJoinRequests';
 import { GET_JOINED_USERS } from './GetJoinedUsers';
 import Button from './Button';
 
-const ACCEPT_JOIN_REQUEST = gql`
-  mutation ACCEPT_JOIN_REQUEST($userId: ID!, $requestingUser: ID!) {
-    acceptJoinRequest(userId: $userId, requestingUser: $requestingUser)
+const REJECT_JOIN_REQUEST = gql`
+  mutation REJECT_JOIN_REQUEST($userId: ID!, $requestingUser: ID!) {
+    rejectJoinRequest(userId: $userId, requestingUser: $requestingUser)
   }
 `;
-const AcceptJoinRequest = ({ userId, requestingUser }) => {
-  const [acceptJoinRequest, { data, loading, error }] = useMutation(
-    ACCEPT_JOIN_REQUEST,
+const RejectJoinRequest = ({ userId, requestingUser }) => {
+  const [rejectJoinRequest, { data, loading, error }] = useMutation(
+    REJECT_JOIN_REQUEST,
     {
       refetchQueries: [
         { query: GET_PETS, variables: { userId } },
@@ -24,8 +24,9 @@ const AcceptJoinRequest = ({ userId, requestingUser }) => {
   );
   return (
     <Button
+      danger
       onClick={() => {
-        acceptJoinRequest({
+        rejectJoinRequest({
           variables: {
             userId,
             requestingUser,
@@ -33,9 +34,9 @@ const AcceptJoinRequest = ({ userId, requestingUser }) => {
         }).catch();
       }}
     >
-      Accept
+      Reject
     </Button>
   );
 };
 
-export default AcceptJoinRequest;
+export default RejectJoinRequest;

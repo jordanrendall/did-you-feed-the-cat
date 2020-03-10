@@ -11,10 +11,10 @@ const defaultState = {
     _id: '',
     name: '',
     email: '',
+    joinRequests: [],
   },
   currentPetId: '',
   currentPetName: '',
-  joinRequests: [{}],
 };
 
 export const UserContext = React.createContext(defaultState);

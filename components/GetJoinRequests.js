@@ -11,6 +11,7 @@ export const GET_JOIN_REQUESTS = gql`
       userId
       name
       email
+      sentReceived
     }
   }
 `;
@@ -28,7 +29,6 @@ const GetJoinRequests = ({ updateJoinRequests }) => {
   }, [data]);
   if (loading || error) return <></>;
   const joinRequests = data.getJoinRequests;
-
   return <></>;
 };
 

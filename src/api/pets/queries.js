@@ -54,7 +54,7 @@ export const petsQueries = {
         });
         // petIds = joinedPets.map(pets => [...pets]);
       } else {
-        return {};
+        return [];
       }
       // petIds2 = [...petIds];
       const pets = await Pets.find({ _id: { $in: [...petIds] } });

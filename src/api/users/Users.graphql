@@ -20,14 +20,16 @@ input UserInput {
 }
 type JoinRequestUser {
   _id: ID!
-  userId: ID!
-  name: String!
-  email: String!
+  userId: ID
+  name: String
+  email: String
+  sentReceived: String
 }
 input JoinRequestUserInput {
-  userId: ID!
-  name: String!
-  email: String!
+  userId: ID
+  name: String
+  email: String
+  sentReceived: String
 }
 
 type Mutation {
@@ -35,10 +37,15 @@ type Mutation {
   login(email: String!, password: String!): User
   joinUsers(userId: ID!, email: String!): User
   acceptJoinRequest(userId: ID!, requestingUser: ID!): Boolean
+  rejectJoinRequest(userId: ID!, requestingUser: ID!): Boolean
+  removeJoinedUser(userId: ID!, userToRemove: ID!): Boolean
+  cancelJoinRequest(userId: ID!, userToCancelRequestTo: ID!): Boolean
+  breakAllConnections(userId: ID!): Boolean
 }
 
 type Query {
   getUsers: [User]
+  getJoinedUsers(userId: ID!): [JoinRequestUser]
   getJoinRequests(userId: ID!): [JoinRequestUser]
   getAccountSettings(userId: ID!): User
 }

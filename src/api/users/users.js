@@ -12,6 +12,10 @@ export const JoinRequestUserSchema = new Schema({
     type: String,
     required: true,
   },
+  sentReceived: {
+    type: String,
+    required: true,
+  },
 });
 export const UserSchema = new Schema({
   name: {

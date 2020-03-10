@@ -8,16 +8,16 @@ import Form from '../styles/FormStyles';
 import Button from '../Button';
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
-    login(email: $email, password: $password)
-      @connection(key: "login", filter: ["email"]) {
+    login(email: $email, password: $password) {
       _id
       name
       email
-      joinRequests {
-        userId
-        name
-        email
-      }
+      # joinRequests {
+      #   userId
+      #   name
+      #   email
+      #   sentReceived
+      # }
     }
   }
 `;
@@ -67,7 +67,7 @@ const LoginForm = () => {
           _id: user._id,
           name: user.name,
           email: user.email,
-          joinRequests: user.joinRequests,
+          // joinRequests: user.joinRequests,
         },
         isLoginModalOpen: false,
       }));

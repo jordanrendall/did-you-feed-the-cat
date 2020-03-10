@@ -12,6 +12,8 @@ import { colours, sizes, breakpoints } from './Utilities';
 import MenuButton from './MenuButton';
 import UserRequests from './UserRequests';
 import JoinRequestsTable from './JoinRequestsTable';
+import BreakAllConnections from './BreakAllConnections';
+import GetJoinedUsers from './GetJoinedUsers';
 
 const StyledTitle = styled.h1`
   margin-left: ${sizes(2)};
@@ -146,8 +148,10 @@ const Nav = () => {
           )}
           {state.isJoinUsersModalOpen && (
             <Modal closeModal={closeModal}>
+              <GetJoinedUsers />
               <JoinRequestsTable />
               <JoinUsers />
+              <BreakAllConnections />
             </Modal>
           )}
 

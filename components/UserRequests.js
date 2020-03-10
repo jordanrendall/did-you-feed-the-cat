@@ -8,7 +8,8 @@ const StyledRequestContainer = styled.article`
   position: relative;
 `;
 const UserRequests = ({ toggleModal }) => {
-  const [{ user, joinRequests }] = useContext(UserContext);
+  const [{ user }] = useContext(UserContext);
+  const joinRequests = user.joinRequests;
   return (
     <StyledRequestContainer>
       <Button onClick={toggleModal}>

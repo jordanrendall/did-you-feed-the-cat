@@ -5,6 +5,24 @@ import Users from './users';
 export const usersQueries = {
   Query: {
     async getUsers() {},
+    async getJoinedUsers(_, { userId }) {
+      const user = await Users.findById(userId);
+      if (!user) throw new Error('No user found');
+      if (user.joinedUsers.length === 0) return [];
+
+      const joinedUserIds = user.joinedUsers;
+      const joinedUsers = joinedUserIds.map(async id => {
+        const joinedUser = await Users.findById(id);
+
+        return {
+          userId: joinedUser._id,
+          email: joinedUser.email,
+          name: joinedUser.name,
+        };
+      });
+
+      return joinedUsers;
+    },
     async getJoinRequests(_, { userId }) {
       const user = await Users.findById(userId);
 

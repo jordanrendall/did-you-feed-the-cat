@@ -31,15 +31,17 @@ export const usersMutations = {
       return user;
     },
     async joinUsers(_, { userId, email }) {
-      const user = await Users.findOne({
+      const userToSendRequestTo = await Users.findOne({
         email: email.toLowerCase(),
       });
-      if (!user) throw new Error('Request could not be completed.');
-
+      if (!userToSendRequestTo)
+        throw new Error('Request could not be completed.');
       const requestingUser = await Users.findById(userId);
 
       if (!requestingUser) throw new Error('Unknown error encountered.');
-      const previousJoinRequests = user.joinRequests;
+      if (email.toLowerCase() == requestingUser.email)
+        throw new Error('This is you!');
+      const previousJoinRequests = userToSendRequestTo.joinRequests;
       const userIds = [...previousJoinRequests].map(id => {
         return JSON.stringify(id.userId);
       });
@@ -53,12 +55,25 @@ export const usersMutations = {
           userId,
           name: requestingUser.name,
           email: requestingUser.email,
+          sentReceived: 'received',
         },
       ];
-      const updatedUser = await Users.findOneAndUpdate(
+      const updatedRequestedUser = await Users.findOneAndUpdate(
         { email: email },
         { joinRequests: newJoinRequests }
       );
+      const prevJoinRequests = requestingUser.joinRequests;
+      const updatedSentRequests = await Users.findByIdAndUpdate(userId, {
+        joinRequests: [
+          ...prevJoinRequests,
+          {
+            userId: userToSendRequestTo._id,
+            name: userToSendRequestTo.name,
+            email: userToSendRequestTo.email,
+            sentReceived: 'sent',
+          },
+        ],
+      });
 
       return requestingUser;
     },
@@ -67,6 +82,7 @@ export const usersMutations = {
       const user = await Users.findById(userId);
       if (!user) throw new Error('No user found');
       const prevJoinedUsers = user.joinedUsers;
+      if (prevJoinedUsers.includes(reqUser)) return true;
 
       const updatedJoinRequests = user.joinRequests.filter(
         i => i.userId !== reqUser
@@ -76,6 +92,112 @@ export const usersMutations = {
         joinRequests: updatedJoinRequests,
         joinedUsers: [...prevJoinedUsers, reqUser],
       });
+      if (!updatedUser) throw new Error('Error updating user.');
+
+      return true;
+    },
+    async rejectJoinRequest(_, { userId, requestingUser }) {
+      const reqUser = requestingUser;
+      const user = await Users.findById(userId);
+      if (!user) throw new Error('No user found');
+      const prevJoinedUsers = user.joinedUsers;
+      if (!prevJoinedUsers.includes(reqUser)) return true;
+      const updatedJoinedUsers = [...prevJoinedUsers].filter(
+        i => i !== reqUser
+      );
+      const updatedJoinRequests = user.joinRequests.filter(
+        i => i.userId !== reqUser
+      );
+
+      const updatedUser = await Users.findByIdAndUpdate(userId, {
+        joinRequests: updatedJoinRequests,
+        joinedUsers: updatedJoinedUsers,
+      });
+      if (!updatedUser) throw new Error('Error updating user.');
+
+      return true;
+    },
+    async removeJoinedUser(_, { userId, userToRemove }) {
+      const user = await Users.findById(userId);
+      if (!user) throw new Error('No user found');
+      const prevJoinedUsers = user.joinedUsers;
+      if (!prevJoinedUsers.includes(userToRemove)) return true;
+
+      const updatedJoinedUsers = [...prevJoinedUsers].filter(user => {
+        return user != userToRemove;
+      });
+
+      const updatedUser = await Users.findByIdAndUpdate(userId, {
+        joinedUsers: updatedJoinedUsers,
+      });
+      if (!updatedUser) throw new Error('Error updating user.');
+
+      return true;
+    },
+    async cancelJoinRequest(_, { userId, userToCancelRequestTo }) {
+      const user = await Users.findById(userId);
+      if (!user) throw new Error('No user found');
+
+      const joinRequestIds = [...user.joinRequests].map(i => i.userId);
+      if (!joinRequestIds.includes(userToCancelRequestTo)) return true;
+
+      const userToCancel = await Users.findById(userToCancelRequestTo);
+
+      const userToCancelFilteredRequests = [
+        ...userToCancel.joinRequests,
+      ].filter(i => i.userId !== userId);
+
+      const updatedUserToCancel = await Users.findByIdAndUpdate(
+        userToCancelRequestTo,
+        { joinRequests: userToCancelFilteredRequests }
+      );
+
+      const updatedJoinRequests = [...joinRequestIds].filter(user => {
+        return user !== userToCancelRequestTo;
+      });
+
+      const updatedUser = await Users.findByIdAndUpdate(userId, {
+        joinRequests: updatedJoinRequests,
+      });
+      if (!updatedUser) throw new Error('Error updating user.');
+
+      return true;
+    },
+    async breakAllConnections(_, { userId }) {
+      const user = await Users.findById(userId);
+      if (!user) throw new Error('No user found');
+
+      const joinedUsers = [...user.joinedUsers].map(async joinedUser => {
+        const filteredJoinedUsers = [...joinedUser.joinedUsers].filter(i => {
+          return i !== userId;
+        });
+        const filteredJoinRequests = [...joinedUser.joinRequests].filter(i => {
+          return i.userId !== userId;
+        });
+        const user = await Users.findByIdAndUpdate(joinedUser, {
+          joinedUsers: filteredJoinedUsers,
+          joinRequests: filteredJoinRequests,
+        });
+        return user;
+      });
+      const updatedUser = await Users.findByIdAndUpdate(userId, {
+        joinedUsers: [],
+        joinRequests: [],
+      });
+      const usersWithRequests = await Users.find({
+        'joinRequests.userId': userId,
+      });
+
+      const updatedUsersWithRequests = [...usersWithRequests].map(
+        async user => {
+          const removedRequest = await Users.findByIdAndUpdate(user._id, {
+            joinRequests: [...user.joinRequests].filter(
+              i => i.userId !== userId
+            ),
+          });
+          return true;
+        }
+      );
       if (!updatedUser) throw new Error('Error updating user.');
 
       return true;
