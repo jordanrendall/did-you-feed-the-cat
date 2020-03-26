@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
-import { UserContext } from '../context/UserContext';
+import { UserContext, userType } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
 import Button from './Button';
 import Form from './styles/FormStyles';
@@ -35,19 +35,24 @@ const ADD_PET_MUTATION = gql`
     }
   }
 `;
-
+type formStateType = {
+  name: string;
+};
 const AddPet = () => {
-  const [{ user }] = useContext(UserContext);
-  const defaultState = {
+  const [{ user }] = useContext<React.Context>(UserContext);
+
+  const defaultState: formStateType = {
     name: '',
   };
-  const [formState, setFormState] = useState(defaultState);
+  const [formState, setFormState] = useState<formStateType | null>(
+    defaultState
+  );
   const [addPet] = useMutation(ADD_PET_MUTATION, {
     variables: { userId: user._id, ...formState },
     refetchQueries: [{ query: GET_PETS, variables: { userId: user._id } }],
   });
 
-  const changeHandler = async e => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
 
@@ -78,7 +83,7 @@ const AddPet = () => {
           onChange={changeHandler}
           required
         />
-        <Button primary className='add-pet-button' type='submit'>
+        <Button primary type='submit'>
           Add Pet
         </Button>
       </Form>

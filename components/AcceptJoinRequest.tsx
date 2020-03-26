@@ -11,7 +11,13 @@ const ACCEPT_JOIN_REQUEST = gql`
     acceptJoinRequest(userId: $userId, requestingUser: $requestingUser)
   }
 `;
-const AcceptJoinRequest = ({ userId, requestingUser }) => {
+
+type Props = {
+  userId: string;
+  requestingUser: string;
+};
+
+const AcceptJoinRequest: React.FC<Props> = ({ userId, requestingUser }) => {
   const [acceptJoinRequest, { data, loading, error }] = useMutation(
     ACCEPT_JOIN_REQUEST,
     {

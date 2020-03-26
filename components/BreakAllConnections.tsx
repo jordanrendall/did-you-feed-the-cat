@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { UserContext } from '../context/UserContext';
+import { UserContext, uContext, userType } from '../context/UserContext';
 import { GET_PETS } from './GetPets';
 import Button from './Button';
 import { GET_JOINED_USERS } from './GetJoinedUsers';
@@ -13,7 +13,7 @@ const BREAK_ALL_CONNECTIONS_MUTATION = gql`
   }
 `;
 
-const BreakAllConnections = () => {
+const BreakAllConnections: React.FC = () => {
   const [{ user }] = useContext(UserContext);
   const [breakAllConnections] = useMutation(BREAK_ALL_CONNECTIONS_MUTATION, {
     refetchQueries: [

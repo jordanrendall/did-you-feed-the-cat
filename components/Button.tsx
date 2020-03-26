@@ -1,7 +1,16 @@
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { sizes, colours, elevation } from './Utilities';
+
+type Props = {
+  primary?: boolean;
+  danger?: boolean;
+  autoSize?: boolean;
+  children: ReactNode;
+  onClick: () => void;
+};
 const ButtonStyles = styled.button`
-  background: ${props =>
+  background: ${(props: Props) =>
     props.primary
       ? colours(props.danger ? 1 : 0, 0)
       : colours(props.danger ? 1 : 0, 2)};
@@ -25,7 +34,7 @@ const ButtonStyles = styled.button`
   ${props => props.autoSize && `width: 100%;`}
 `;
 
-const Button = props => {
+const Button: React.FC<Props> = props => {
   return <ButtonStyles {...props}>{props.children}</ButtonStyles>;
 };
 
